@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Sentence Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      color: #1f2937;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.96), rgba(243,244,246,0.88) 40%, rgba(229,231,235,0.92) 100%),
+        linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 56px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.76);
+      border: 1px solid rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      color: #6b7280;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+    }
+
+    .hero-sub {
+      margin: 14px auto 0;
+      max-width: 760px;
+      line-height: 1.8;
+      font-size: 15px;
+      color: #6b7280;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-family: inherit;
+    }
+
+    .tab-btn, .ghost-btn, .soft-btn {
+      border-radius: 999px;
+      padding: 11px 16px;
+      font-size: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .tab-btn {
+      background: rgba(255,255,255,0.72);
+      color: #374151;
+      border: 1px solid rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
+    }
+
+    .tab-btn.active {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+
+    .ghost-btn {
+      background: rgba(255,255,255,0.76);
+      color: #111827;
+      border: 1px solid rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+    }
+
+    .ghost-btn:hover, .tab-btn:hover, .soft-btn:hover, .mini-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.97;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .stat-card, .panel {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 40px rgba(31, 41, 55, 0.08);
+      border-radius: 28px;
+    }
+
+    .stat-card {
+      padding: 18px 20px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: 800;
+      color: #111827;
+      letter-spacing: -0.03em;
+    }
+
+    .layout {
+      display: flex;
+      justify-content: center;
+    }
+
+    #randomPanel {
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .panel-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    .status {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+
+    .quote-stage {
+      min-height: 460px;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.98), rgba(248,250,252,0.92), rgba(224,242,254,0.94));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-card {
+      width: 100%;
+      max-width: 640px;
+      text-align: center;
+      animation: fadeUp 0.35s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .quote-en {
+      margin: 0;
+      font-size: clamp(28px, 4.3vw, 40px);
+      line-height: 1.75;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: pre-wrap;
+      letter-spacing: -0.03em;
+    }
+
+    .quote-ko-wrap {
+      margin: 24px auto 0;
+      max-width: 560px;
+      padding: 18px 20px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+      backdrop-filter: blur(10px);
+    }
+
+    .quote-ko-label {
+      font-size: 12px;
+      color: #9ca3af;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .quote-ko {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.85;
+      color: #4b5563;
+      white-space: pre-wrap;
+    }
+
+    .quote-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .soft-btn {
+      background: #0f172a;
+      color: white;
+    }
+
+    .empty {
+      text-align: center;
+      color: #6b7280;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .search-panel {
+      margin-top: 20px;
+    }
+
+    .search {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.76);
+      border-radius: 18px;
+      padding: 13px 15px;
+      font-size: 14px;
+      outline: none;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.4);
+      margin-bottom: 14px;
+    }
+
+    .list {
+      max-height: 620px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .quote-item {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(255,255,255,0.9);
+      margin-bottom: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    }
+
+    .quote-item-en {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.8;
+      font-weight: 700;
+      color: #111827;
+      white-space: pre-wrap;
+    }
+
+    .quote-item-ko {
+      margin: 10px 0 0;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #6b7280;
+      white-space: pre-wrap;
+    }
+
+    .quote-item-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .mini-btn {
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      background: white;
+      color: #111827;
+      border: 1px solid #e5e7eb;
+    }
+
+    .notice {
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #6b7280;
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        padding: 22px 14px 42px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .panel, .stat-card {
+        border-radius: 24px;
+      }
+
+      .quote-stage {
+        min-height: 380px;
+        padding: 22px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="hero-badge">Essential English Sentences</div>
+      <h1>영어 필수 암기문장</h1>
+      <p class="hero-sub">
+        구글 시트에 정리한 영어 필수 문장을 불러와 랜덤으로 꺼내보는 웹앱.
+        영어 문장과 한국어 뜻을 함께 보면서 반복해서 익히기 쉽게 만들었어.
+      </p>
+    </div>
+
+    <div class="topbar">
+      <div class="tabs">
+        <button id="tabRandom" class="tab-btn active">랜덤 문장</button>
+        <button id="tabAll" class="tab-btn">모든 문장 보기</button>
+      </div>
+      <button id="refreshBtn" class="ghost-btn">최신 문장 다시 불러오기</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">전체 문장</div>
+        <div id="statTotal" class="stat-value">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">한국어 뜻 포함</div>
+        <div id="statKorean" class="stat-value">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">현재 상태</div>
+        <div id="statStatus" class="stat-value" style="font-size:20px; line-height:1.4;">불러오는 중</div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div class="panel" id="randomPanel">
+        <div class="panel-title"><span>오늘의 랜덤 문장</span></div>
+        <div id="statusText" class="status">구글 스크립트에서 데이터를 불러오는 중...</div>
+        <div class="quote-stage">
+          <div id="quoteStageContent" class="empty">잠시만 기다려줘.</div>
+        </div>
+
+        <div id="allPanel" class="search-panel" style="display:none;">
+          <input id="searchInput" class="search" type="text" placeholder="영어 또는 한국어로 검색" />
+          <div id="allList" class="list"></div>
+          <div class="notice">
+            새 문장을 추가할 때는 구글 시트에만 입력하면 돼. 그 다음 이 페이지에서 새로고침하거나
+            <b>최신 문장 다시 불러오기</b>를 누르면 반영돼.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyo2a4fT5KEEiLXaDI_D7qUjmTVuFpqjjbDrERrJrXj1e8mOKCtSScw9XJbORuJFhXxrw/exec";
+
+    let quotes = [];
+    let currentQuote = null;
+
+    const quoteStageContent = document.getElementById("quoteStageContent");
+    const allList = document.getElementById("allList");
+    const searchInput = document.getElementById("searchInput");
+    const statusText = document.getElementById("statusText");
+    const statTotal = document.getElementById("statTotal");
+    const statKorean = document.getElementById("statKorean");
+    const statStatus = document.getElementById("statStatus");
+
+    function escapeHtml(str = "") {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function setView(view) {
+      document.getElementById("tabRandom").classList.toggle("active", view === "random");
+      document.getElementById("tabAll").classList.toggle("active", view === "all");
+      document.getElementById("allPanel").style.display = view === "all" ? "block" : "none";
+    }
+
+    function updateStats() {
+      statTotal.textContent = quotes.length;
+      statKorean.textContent = quotes.filter(q => q.korean).length;
+      statStatus.textContent = quotes.length ? "연결 완료" : "데이터 없음";
+    }
+
+    function renderRandomQuote() {
+      if (!quotes.length) {
+        quoteStageContent.innerHTML = `<div class="empty">불러온 문장이 없어요.<br>구글 시트 데이터나 Apps Script 설정을 확인해줘.</div>`;
+        return;
+      }
+
+      if (!currentQuote) {
+        currentQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      }
+
+      quoteStageContent.innerHTML = `
+        <div class="quote-card">
+          <p class="quote-en">“${escapeHtml(currentQuote.english)}”</p>
+          ${currentQuote.korean ? `
+            <div class="quote-ko-wrap">
+              <div class="quote-ko-label">Korean Meaning</div>
+              <p class="quote-ko">${escapeHtml(currentQuote.korean)}</p>
+            </div>
+          ` : ""}
+          <div class="quote-actions">
+            <button id="randomAgainBtn" class="soft-btn">다른 문장 보기</button>
+            <button id="goAllBtn" class="ghost-btn">전체 문장 보기</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("randomAgainBtn").addEventListener("click", pickRandomQuote);
+      document.getElementById("goAllBtn").addEventListener("click", () => setView("all"));
+    }
+
+    function renderAllQuotes() {
+      const keyword = searchInput.value.trim().toLowerCase();
+      const filtered = quotes.filter(q => {
+        if (!keyword) return true;
+        return q.english.toLowerCase().includes(keyword) || (q.korean || "").toLowerCase().includes(keyword);
+      });
+
+      if (!filtered.length) {
+        allList.innerHTML = `<div class="empty" style="padding: 30px 0;">검색 결과가 없어요.</div>`;
+        return;
+      }
+
+      allList.innerHTML = filtered.map((q, index) => `
+        <div class="quote-item">
+          <p class="quote-item-en">${escapeHtml(q.english)}</p>
+          ${q.korean ? `<p class="quote-item-ko">${escapeHtml(q.korean)}</p>` : ""}
+          <div class="quote-item-actions">
+            <button class="mini-btn" data-open-index="${index}">랜덤 카드로 보기</button>
+          </div>
+        </div>
+      `).join("");
+
+      document.querySelectorAll("[data-open-index]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentQuote = filtered[Number(btn.dataset.openIndex)];
+          setView("random");
+          renderRandomQuote();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      });
+    }
+
+    function pickRandomQuote() {
+      if (!quotes.length) return;
+      let nextIndex = Math.floor(Math.random() * quotes.length);
+
+      if (quotes.length > 1 && currentQuote) {
+        const currentIndex = quotes.findIndex(
+          q => q.english === currentQuote.english && q.korean === currentQuote.korean
+        );
+        while (nextIndex === currentIndex) {
+          nextIndex = Math.floor(Math.random() * quotes.length);
+        }
+      }
+
+      currentQuote = quotes[nextIndex];
+      renderRandomQuote();
+    }
+
+    async function loadQuotes() {
+      statusText.textContent = "구글 스크립트에서 최신 문장을 불러오는 중...";
+      quoteStageContent.innerHTML = `<div class="empty">구글 스크립트에서 최신 문장을 불러오는 중...</div>`;
+      statStatus.textContent = "불러오는 중";
+
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        quotes = Array.isArray(data)
+          ? data.filter(item => item && item.english).map(item => ({
+              english: String(item.english || "").trim(),
+              korean: String(item.korean || "").trim()
+            })).filter(item => item.english)
+          : [];
+
+        currentQuote = quotes.length ? quotes[Math.floor(Math.random() * quotes.length)] : null;
+        updateStats();
+        renderRandomQuote();
+        renderAllQuotes();
+        statusText.textContent = "구글 시트와 연결됐어. 시트 수정 후 다시 불러오면 최신 문장이 반영돼.";
+      } catch (error) {
+        console.error(error);
+        statStatus.textContent = "연결 실패";
+        statusText.textContent = "데이터를 읽지 못했어. Apps Script 배포 권한이나 URL을 다시 확인해줘.";
+        quoteStageContent.innerHTML = `
+          <div class="empty">
+            데이터를 불러오지 못했어.<br><br>
+            1) Apps Script가 <b>웹 앱</b>으로 배포됐는지<br>
+            2) 접근 권한이 <b>모든 사용자</b>인지<br>
+            3) 구글 시트 첫 행이 <b>english / korean</b>인지 확인해줘.
+          </div>
+        `;
+        allList.innerHTML = "";
+      }
+    }
+
+    document.getElementById("tabRandom").addEventListener("click", () => setView("random"));
+    document.getElementById("tabAll").addEventListener("click", () => {
+      setView("all");
+      renderAllQuotes();
+    });
+    document.getElementById("refreshBtn").addEventListener("click", loadQuotes);
+    searchInput.addEventListener("input", renderAllQuotes);
+
+    setView("random");
+    loadQuotes();
+  </script>
+</body>
+</html>
