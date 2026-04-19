@@ -362,8 +362,7 @@
       <div class="hero-badge">Essential English Sentences</div>
       <h1>영어 필수 암기문장</h1>
       <p class="hero-sub">
-        구글 시트에 정리한 영어 필수 문장을 불러와 랜덤으로 꺼내보는 웹앱.
-        한국어 뜻을 먼저 크게 보고, 영어 문장을 아래에서 함께 익히기 쉽게 만들었어.
+        
       </p>
     </div>
 
@@ -393,7 +392,7 @@
     <div class="layout">
       <div class="panel" id="randomPanel">
         <div class="panel-title"><span>오늘의 랜덤 문장</span></div>
-        <div id="statusText" class="status">구글 스크립트에서 데이터를 불러오는 중...</div>
+        <div id="statusText" class="status"> 데이터를 불러오는 중...</div>
         <div class="quote-stage">
           <div id="quoteStageContent" class="empty">잠시만 기다려줘.</div>
         </div>
@@ -402,8 +401,8 @@
           <input id="searchInput" class="search" type="text" placeholder="영어 또는 한국어로 검색" />
           <div id="allList" class="list"></div>
           <div class="notice">
-            새 문장을 추가할 때는 구글 시트에만 입력하면 돼. 그 다음 이 페이지에서 새로고침하거나
-            <b>최신 문장 다시 불러오기</b>를 누르면 반영돼.
+  
+  
           </div>
         </div>
       </div>
@@ -447,7 +446,7 @@
 
     function renderRandomQuote() {
       if (!quotes.length) {
-        quoteStageContent.innerHTML = `<div class="empty">불러온 문장이 없어요.<br>구글 시트 데이터나 Apps Script 설정을 확인해줘.</div>`;
+        quoteStageContent.innerHTML = `<div class="empty">불러온 문장이 없어요.<br> Apps Script 설정을 확인해줘.</div>`;
         return;
       }
 
@@ -525,8 +524,8 @@
     }
 
     async function loadQuotes() {
-      statusText.textContent = "구글 스크립트에서 최신 문장을 불러오는 중...";
-      quoteStageContent.innerHTML = `<div class="empty">구글 스크립트에서 최신 문장을 불러오는 중...</div>`;
+      statusText.textContent = " 최신 문장을 불러오는 중...";
+      quoteStageContent.innerHTML = `<div class="empty"> 최신 문장을 불러오는 중...</div>`;
       statStatus.textContent = "불러오는 중";
 
       try {
@@ -545,7 +544,7 @@
         updateStats();
         renderRandomQuote();
         renderAllQuotes();
-        statusText.textContent = "구글 시트와 연결됐어. 시트 수정 후 다시 불러오면 최신 문장이 반영돼.";
+        statusText.textContent = "시트 수정 후 다시 불러오면 최신 문장이 반영돼.";
       } catch (error) {
         console.error(error);
         statStatus.textContent = "연결 실패";
