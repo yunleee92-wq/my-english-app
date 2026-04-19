@@ -6,7 +6,7 @@
   <title>English Sentence Room</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
 
@@ -205,17 +205,18 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .quote-en {
+    .quote-ko-main {
       margin: 0;
-      font-size: clamp(28px, 4.3vw, 40px);
-      line-height: 1.75;
+      font-family: "Gowun Batang", serif;
+      font-size: clamp(30px, 4.8vw, 44px);
+      line-height: 1.9;
       font-weight: 700;
       color: #0f172a;
       white-space: pre-wrap;
       letter-spacing: -0.03em;
     }
 
-    .quote-ko-wrap {
+    .quote-en-wrap {
       margin: 24px auto 0;
       max-width: 560px;
       padding: 18px 20px;
@@ -226,7 +227,7 @@
       backdrop-filter: blur(10px);
     }
 
-    .quote-ko-label {
+    .quote-en-label {
       font-size: 12px;
       color: #9ca3af;
       font-weight: 800;
@@ -235,11 +236,11 @@
       margin-bottom: 8px;
     }
 
-    .quote-ko {
+    .quote-en-small {
       margin: 0;
-      font-size: 16px;
-      line-height: 1.85;
-      color: #4b5563;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #6b7280;
       white-space: pre-wrap;
     }
 
@@ -294,16 +295,17 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.04);
     }
 
-    .quote-item-en {
+    .quote-item-ko {
       margin: 0;
-      font-size: 18px;
-      line-height: 1.8;
+      font-family: "Gowun Batang", serif;
+      font-size: 20px;
+      line-height: 1.85;
       font-weight: 700;
       color: #111827;
       white-space: pre-wrap;
     }
 
-    .quote-item-ko {
+    .quote-item-en {
       margin: 10px 0 0;
       font-size: 14px;
       line-height: 1.8;
@@ -361,7 +363,7 @@
       <h1>영어 필수 암기문장</h1>
       <p class="hero-sub">
         구글 시트에 정리한 영어 필수 문장을 불러와 랜덤으로 꺼내보는 웹앱.
-        영어 문장과 한국어 뜻을 함께 보면서 반복해서 익히기 쉽게 만들었어.
+        한국어 뜻을 먼저 크게 보고, 영어 문장을 아래에서 함께 익히기 쉽게 만들었어.
       </p>
     </div>
 
@@ -455,11 +457,11 @@
 
       quoteStageContent.innerHTML = `
         <div class="quote-card">
-          <p class="quote-en">“${escapeHtml(currentQuote.english)}”</p>
-          ${currentQuote.korean ? `
-            <div class="quote-ko-wrap">
-              <div class="quote-ko-label">Korean Meaning</div>
-              <p class="quote-ko">${escapeHtml(currentQuote.korean)}</p>
+          ${currentQuote.korean ? `<p class="quote-ko-main">“${escapeHtml(currentQuote.korean)}”</p>` : ""}
+          ${currentQuote.english ? `
+            <div class="quote-en-wrap">
+              <div class="quote-en-label">English Sentence</div>
+              <p class="quote-en-small">${escapeHtml(currentQuote.english)}</p>
             </div>
           ` : ""}
           <div class="quote-actions">
@@ -487,8 +489,8 @@
 
       allList.innerHTML = filtered.map((q, index) => `
         <div class="quote-item">
-          <p class="quote-item-en">${escapeHtml(q.english)}</p>
           ${q.korean ? `<p class="quote-item-ko">${escapeHtml(q.korean)}</p>` : ""}
+          ${q.english ? `<p class="quote-item-en">${escapeHtml(q.english)}</p>` : ""}
           <div class="quote-item-actions">
             <button class="mini-btn" data-open-index="${index}">랜덤 카드로 보기</button>
           </div>
@@ -533,10 +535,10 @@
         const data = await res.json();
 
         quotes = Array.isArray(data)
-          ? data.filter(item => item && item.english).map(item => ({
+          ? data.filter(item => item && (item.english || item.korean)).map(item => ({
               english: String(item.english || "").trim(),
               korean: String(item.korean || "").trim()
-            })).filter(item => item.english)
+            })).filter(item => item.english || item.korean)
           : [];
 
         currentQuote = quotes.length ? quotes[Math.floor(Math.random() * quotes.length)] : null;
